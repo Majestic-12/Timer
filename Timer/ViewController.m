@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Dan Park. All rights reserved.
 //
 
-#import "BluetoothManager.h"
+//#import "BluetoothManager.h"
 #import "LocationManager.h"
 #import "ViewController.h"
 
@@ -22,7 +22,7 @@ typedef enum : NSInteger {
     
     NSURLSession *session;
     
-    BluetoothManager *manager;
+//    BluetoothManager *manager;
     LocationManager *locationManager;
 }
 @end
@@ -59,18 +59,22 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    manager = [BluetoothManager new];
-    [manager start];
-    
-    locationManager = [LocationManager new];
-    [locationManager start];
-
     [self initSession];
+    if (! locationManager) {
+        locationManager = [LocationManager new];
+        [locationManager start];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
 }
 
 - (void)initSession{

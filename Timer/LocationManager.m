@@ -38,6 +38,9 @@
     if (! locationManager) {
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
+        [locationManager requestAlwaysAuthorization];
+        if ([CLLocationManager locationServicesEnabled]) {
+        }
     }
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
@@ -65,8 +68,8 @@
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
     
-    NSString *string = [NSString stringWithFormat:@"region:%@, beacons:%@", region, beacons];
-    [NetDiagnostic inspectString:[NSString stringWithFormat:@"%s",__FUNCTION__] string:string];
+//    NSString *string = [NSString stringWithFormat:@"region:%@, beacons:%@", region, beacons];
+//    [NetDiagnostic inspectString:[NSString stringWithFormat:@"%s",__FUNCTION__] string:string];
 }
 
 - (void)locationManager:(CLLocationManager *)manager

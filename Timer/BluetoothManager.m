@@ -18,23 +18,22 @@
 
 -(id)init {
     if ((self = [super init])) {
+        dispatch_queue_t centralQueue = dispatch_queue_create("com.zebra.BluetoothManager", DISPATCH_QUEUE_SERIAL);
+        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:nil];
+        //        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:@{CBCentralManagerOptionShowPowerAlertKey:@NO}];
     }
     return self;
 }
 
 -(void)start{
-    if (! centralManager) {
-        dispatch_queue_t centralQueue = dispatch_queue_create("com.zebra.BluetoothManager", DISPATCH_QUEUE_SERIAL);
-        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:@{CBCentralManagerOptionShowPowerAlertKey:@NO}];
-    }
     
     if ([centralManager state] == CBCentralManagerStatePoweredOn) {
         [centralManager stopScan];
         
-        NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
+//        NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
         NSArray *services = nil;
         [centralManager scanForPeripheralsWithServices:services
-                                               options:options];
+                                               options:nil];
     }
 }
 

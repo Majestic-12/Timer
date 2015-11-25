@@ -6,16 +6,23 @@
 //  Copyright (c) 2015 Dan Park. All rights reserved.
 //
 
+#import "BluetoothManager.h"
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    BluetoothManager *manager;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    if (! manager) {
+        manager = [BluetoothManager new];
+    }
+
     // Override point for customization after application launch.
     return YES;
 }
@@ -26,6 +33,8 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    [manager start];
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
