@@ -8,6 +8,10 @@
 
 #import "ViewController.h"
 
+typedef enum : NSInteger {
+    MPactNetworkCodeUnauthorized = 401,
+} MPactNetworkCode;
+
 @interface ViewController ()<NSURLSessionDelegate> {
     NSTimeInterval interval;
     NSDate *timestampDate;
@@ -22,22 +26,27 @@
 
 void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     if (error != noErr) {
-        NSMutableString *message = [NSMutableString stringWithFormat:@"Error[%@:%ld] ", error.domain, (long)error.code];
+        
+        NSMutableString *message = [NSMutableString new];
+        
+        [message appendFormat:@"domain:%@ ", error.domain];
+        
         if (error.localizedDescription != nil)
             [message appendFormat:@"%@", error.localizedDescription];
         
-        if (error.localizedFailureReason != nil)
-            [message appendFormat:@", %@", error.localizedFailureReason];
+//        if (error.localizedFailureReason != nil)
+//            [message appendFormat:@", %@", error.localizedFailureReason];
         
-        if (error.userInfo[NSUnderlyingErrorKey] != nil)
-            [message appendFormat:@", %@", error.userInfo[NSUnderlyingErrorKey]];
+//        if (error.userInfo[NSUnderlyingErrorKey] != nil)
+//            [message appendFormat:@", %@", error.userInfo[NSUnderlyingErrorKey]];
         
-        if (error.localizedRecoverySuggestion != nil)
-            [message appendFormat:@", %@", error.localizedRecoverySuggestion];
+//        if (error.localizedRecoverySuggestion != nil)
+//            [message appendFormat:@", %@", error.localizedRecoverySuggestion];
 
-        [message appendFormat:@" - func(%@):line:%d\n", functionName, lineNumber];
-//        NSLog(@"%@", message);
-        NSLog(@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code);
+        [message appendFormat:@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code];
+        NSLog(@"%@", message);
+        
+//        NSLog(@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code);
     }
 }
 
@@ -84,12 +93,19 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     ^(NSURL *location, NSURLResponse *response, NSError *error) {
         [self logTimed];
         
-        if (! error) {
-            NSInteger status = [(NSHTTPURLResponse *) response statusCode];
-            NSLog(@"response status:%@", @(status));
-        } else {
+        BOOL retryTask = NO;
+        if (error) {
             ErrorLog(__LINE__, NSStringFromSelector(_cmd), error);
-            
+            retryTask = YES;
+        } else {
+            NSInteger status = [(NSHTTPURLResponse *) response statusCode];
+            if (MPactNetworkCodeUnauthorized == status) {
+                retryTask = YES;
+            }
+            NSLog(@"response status:%@", @(status));
+        }
+        
+        if (retryTask) {
             interval *= 2;
             NSLog(@"double interval:%@", @(interval));
             
