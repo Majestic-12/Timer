@@ -19,8 +19,10 @@
 -(id)init {
     if ((self = [super init])) {
         dispatch_queue_t centralQueue = dispatch_queue_create("com.zebra.BluetoothManager", DISPATCH_QUEUE_SERIAL);
-        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:nil];
-        //        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:@{CBCentralManagerOptionShowPowerAlertKey:@NO}];
+        
+//        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:nil];
+        
+                centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralQueue options:@{CBCentralManagerOptionShowPowerAlertKey:@NO}];
     }
     return self;
 }
@@ -28,12 +30,14 @@
 -(void)start{
     
     if ([centralManager state] == CBCentralManagerStatePoweredOn) {
-        [centralManager stopScan];
+//        [centralManager stopScan];
         
-//        NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
+        NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
         NSArray *services = nil;
+        CBUUID *service = [CBUUID UUIDWithString:@"FEEB"];
+        services = @[service];
         [centralManager scanForPeripheralsWithServices:services
-                                               options:nil];
+                                               options:options];
     }
 }
 
@@ -52,8 +56,8 @@
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *, id> *)advertisementData RSSI:(NSNumber *)RSSI {
 
-    NSString *string = [NSString stringWithFormat:@"RSSI(%@), advertisementData:%@, peripheral:%@", [RSSI stringValue], advertisementData, peripheral];
-    [NetDiagnostic inspectString:[NSString stringWithFormat:@"%s",__FUNCTION__] string:string];
+//    NSString *string = [NSString stringWithFormat:@"RSSI(%@), advertisementData:%@, peripheral:%@", [RSSI stringValue], advertisementData, peripheral];
+//    [NetDiagnostic inspectString:[NSString stringWithFormat:@"%s",__FUNCTION__] string:string];
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {

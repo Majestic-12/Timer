@@ -60,10 +60,11 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     // Do any additional setup after loading the view, typically from a nib.
     
     [self initSession];
-    if (! locationManager) {
-        locationManager = [LocationManager new];
-        [locationManager start];
-    }
+    
+//    if (! locationManager) {
+//        locationManager = [LocationManager new];
+//        [locationManager start];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
