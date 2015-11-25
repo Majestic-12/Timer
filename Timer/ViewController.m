@@ -37,7 +37,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
 
         [message appendFormat:@" - func(%@):line:%d\n", functionName, lineNumber];
 //        NSLog(@"%@", message);
-        NSLog(@"func(%@):line:%d: error:%ld", functionName, lineNumber, (long)error.code);
+        NSLog(@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code);
     }
 }
 
@@ -68,13 +68,14 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     
     interval = 1;
     timestampDate = [NSDate date];
-    [self downloadTask:nil];
+    [self loginTask:nil];
+//    [self downloadTask:nil];
 }
 
 - (void)loginTask:(NSTimer*)atimer {
-    NSString *request = [NSString stringWithFormat:@"login_submit?username=%@&password=%@&auth_service=local",@"superuser",@"mpact123"];
+    NSString *request = [NSString stringWithFormat:@"login_submit?username=%@&password=%@&auth_service=local",@"superuser2",@"mpact123"];
     NSString *encoded = [request stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    stringURL = @"http://10.10.10.234:8888";
+    stringURL = @"http://10.76.3.42:80";
     NSString *feedURL = [[NSString alloc] initWithFormat:@"%@/%@/%@", stringURL, @"stats/dsr", encoded];
 
     NSURL *url = [NSURL URLWithString:feedURL];
@@ -82,14 +83,17 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     NSURLSessionDownloadTask* downloadTask = [session downloadTaskWithRequest:req completionHandler:
     ^(NSURL *location, NSURLResponse *response, NSError *error) {
         [self logTimed];
-        if (error) {
+        
+        if (! error) {
+            NSInteger status = [(NSHTTPURLResponse *) response statusCode];
+            NSLog(@"response status:%@", @(status));
+        } else {
             ErrorLog(__LINE__, NSStringFromSelector(_cmd), error);
             
             interval *= 2;
             NSLog(@"double interval:%@", @(interval));
             
-            NSTimer *timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(timed:) userInfo:nil repeats:NO];
-            //    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+            NSTimer *timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(loginTask:) userInfo:nil repeats:NO];
             [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
         }
     }];
@@ -114,7 +118,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
             interval *= 2;
             NSLog(@"double interval:%@", @(interval));
             
-            NSTimer *timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(timed:) userInfo:nil repeats:NO];
+            NSTimer *timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(downloadTask:) userInfo:nil repeats:NO];
             //    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
             [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
         }
