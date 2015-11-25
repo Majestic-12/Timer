@@ -14,6 +14,9 @@
 		59026B841BE5D964003084B2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59026B831BE5D964003084B2 /* Images.xcassets */; };
 		59026B871BE5D964003084B2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59026B851BE5D964003084B2 /* LaunchScreen.xib */; };
 		59026B931BE5D964003084B2 /* TimerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59026B921BE5D964003084B2 /* TimerTests.m */; };
+		CA5D5C521C054E5600CED5BC /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5D5C4F1C054E5600CED5BC /* LocationManager.m */; };
+		CA5D5C531C054E5600CED5BC /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5D5C511C054E5600CED5BC /* BluetoothManager.m */; };
+		CA5D5C561C054EC100CED5BC /* NetDiagnostic.m in Sources */ = {isa = PBXBuildFile; fileRef = CA5D5C551C054EC100CED5BC /* NetDiagnostic.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,12 @@
 		59026B8C1BE5D964003084B2 /* TimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59026B911BE5D964003084B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59026B921BE5D964003084B2 /* TimerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimerTests.m; sourceTree = "<group>"; };
+		CA5D5C4E1C054E5600CED5BC /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		CA5D5C4F1C054E5600CED5BC /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		CA5D5C501C054E5600CED5BC /* BluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
+		CA5D5C511C054E5600CED5BC /* BluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
+		CA5D5C541C054EC100CED5BC /* NetDiagnostic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetDiagnostic.h; sourceTree = "<group>"; };
+		CA5D5C551C054EC100CED5BC /* NetDiagnostic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetDiagnostic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +90,12 @@
 		59026B751BE5D964003084B2 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
+				CA5D5C541C054EC100CED5BC /* NetDiagnostic.h */,
+				CA5D5C551C054EC100CED5BC /* NetDiagnostic.m */,
+				CA5D5C4E1C054E5600CED5BC /* LocationManager.h */,
+				CA5D5C4F1C054E5600CED5BC /* LocationManager.m */,
+				CA5D5C501C054E5600CED5BC /* BluetoothManager.h */,
+				CA5D5C511C054E5600CED5BC /* BluetoothManager.m */,
 				59026B7A1BE5D964003084B2 /* AppDelegate.h */,
 				59026B7B1BE5D964003084B2 /* AppDelegate.m */,
 				59026B7D1BE5D964003084B2 /* ViewController.h */,
@@ -220,9 +235,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA5D5C561C054EC100CED5BC /* NetDiagnostic.m in Sources */,
+				CA5D5C521C054E5600CED5BC /* LocationManager.m in Sources */,
 				59026B7F1BE5D964003084B2 /* ViewController.m in Sources */,
 				59026B7C1BE5D964003084B2 /* AppDelegate.m in Sources */,
 				59026B791BE5D964003084B2 /* main.m in Sources */,
+				CA5D5C531C054E5600CED5BC /* BluetoothManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

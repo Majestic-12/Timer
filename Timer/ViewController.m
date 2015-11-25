@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Dan Park. All rights reserved.
 //
 
+#import "BluetoothManager.h"
+#import "LocationManager.h"
 #import "ViewController.h"
 
 typedef enum : NSInteger {
@@ -19,6 +21,9 @@ typedef enum : NSInteger {
     NSString *stringURL;
     
     NSURLSession *session;
+    
+    BluetoothManager *manager;
+    LocationManager *locationManager;
 }
 @end
 
@@ -43,7 +48,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
 //        if (error.localizedRecoverySuggestion != nil)
 //            [message appendFormat:@", %@", error.localizedRecoverySuggestion];
 
-        [message appendFormat:@"error at [%@], line:%d: code:%ld", functionName, lineNumber, (long)error.code];
+        [message appendFormat:@"error at [%@], line:%d, code:%ld", functionName, lineNumber, (long)error.code];
         NSLog(@"%@", message);
         
 //        NSLog(@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code);
@@ -54,6 +59,12 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    manager = [BluetoothManager new];
+    [manager start];
+    
+    locationManager = [LocationManager new];
+    [locationManager start];
+
     [self initSession];
 }
 
@@ -75,7 +86,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
         session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:queue];
     }
     
-    interval = 1;
+    interval = 5;
     timestampDate = [NSDate date];
     [self loginTask:nil];
 //    [self downloadTask:nil];
@@ -111,6 +122,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
         
         if (retryTask) {
             interval *= 2;
+            interval = MIN(interval, 300);
             NSLog(@"double interval:%@", @(interval));
             timestampDate = [NSDate date];
 
@@ -124,6 +136,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
 }
 
 - (void)downloadTask:(NSTimer*)atimer {
+    // NSURLErrorDomain
 //    stringURL = @"http://172.20.31.86/888";
 //    stringURL = @"http://10.10.10.92/4321";
     stringURL = @"http://10.10.10.234:8888";
