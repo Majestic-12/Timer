@@ -43,7 +43,7 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
 //        if (error.localizedRecoverySuggestion != nil)
 //            [message appendFormat:@", %@", error.localizedRecoverySuggestion];
 
-        [message appendFormat:@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code];
+        [message appendFormat:@"error at [%@], line:%d: code:%ld", functionName, lineNumber, (long)error.code];
         NSLog(@"%@", message);
         
 //        NSLog(@"error at %@-%d: code:%ld", functionName, lineNumber, (long)error.code);
@@ -82,9 +82,13 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
 }
 
 - (void)loginTask:(NSTimer*)atimer {
-    NSString *request = [NSString stringWithFormat:@"login_submit?username=%@&password=%@&auth_service=local",@"superuser2",@"mpact123"];
+    [self logTimed];
+
+    NSString *request = [NSString stringWithFormat:@"login_submit?username=%@&password=%@&auth_service=local",@"superuser",@"mpact123"];
     NSString *encoded = [request stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    stringURL = @"http://10.76.3.42:80";
+//    stringURL = @"http://10.76.3.42:8888";
+    stringURL = @"http://10.10.10.234:8888";
+    
     NSString *feedURL = [[NSString alloc] initWithFormat:@"%@/%@/%@", stringURL, @"stats/dsr", encoded];
 
     NSURL *url = [NSURL URLWithString:feedURL];
@@ -108,7 +112,8 @@ void ErrorLog(int lineNumber, NSString *functionName, NSError *error) {
         if (retryTask) {
             interval *= 2;
             NSLog(@"double interval:%@", @(interval));
-            
+            timestampDate = [NSDate date];
+
             NSTimer *timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(loginTask:) userInfo:nil repeats:NO];
             [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
         }
